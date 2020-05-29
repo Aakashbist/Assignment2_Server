@@ -23,10 +23,6 @@ exports.addNotes = functions.https.onRequest((req, res) => {
             userId
         } = req.body;
 
-        console.log(req.query)
-
-        const item = req.body.item
-
         database.push(req.body);
         res.status(200).json({ message: `Added successFully` })
     }, (error) => {
