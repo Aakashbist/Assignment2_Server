@@ -33,7 +33,6 @@ exports.addNotes = functions.https.onRequest((req, res) => {
 })
 
 
-
 exports.getNotes = functions.https.onRequest((req, res) => {
     return cors(req, res, () => {
         if (req.method !== 'GET') {
@@ -105,6 +104,5 @@ exports.delete = functions.https.onRequest((req, res) => {
         res.status(error.code).json({
             message: `Something went wrong. ${error.message}`
         })
-    }
-    )
+    })
 })
