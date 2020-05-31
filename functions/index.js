@@ -1,10 +1,10 @@
-import { https } from "firebase-functions";
-import express from "express";
-import cors from "cors";
-import { initializeApp, database as _database } from "firebase-admin";
+const functions = require("firebase-functions");
+const express = require("express");
+const cors = require("cors");
+const admin = require("firebase-admin");
 
-initializeApp();
-const database = _database().ref('/notes');
+admin.initializeApp();
+const database = admin.database().ref('/notes');
 
 
 const app = express();
@@ -75,4 +75,4 @@ app.delete("/:id", async (req, res) => {
 })
 
 
-export const notes = https.onRequest(app);
+exports.notes = functions.https.onRequest(app);
