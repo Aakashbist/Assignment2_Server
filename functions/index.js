@@ -10,11 +10,9 @@ const database = admin.database().ref('/notes');
 const app = express();
 app.use(cors({ origin: true }))
 
-app.get("/", (req, res) => {
-
+const getItemsFromDatabase = (res) => {
     let notes = [];
-
-    return database.on('value', (snapshot) => {
+    return database.on("value", (snapshot) => {
         snapshot.forEach((item) => {
             notes.push({
                 id: item.key,
@@ -26,22 +24,29 @@ app.get("/", (req, res) => {
                 userId: item.val().userId,
 
             });
-
         });
-
-        res.status(200).json(notes)
+        res.status(200).json(notes);
     }, (error) => {
         res.status(error.code).json({
             message: `Something went wrong. ${error.message}`
         })
-    }
-    )
+    })
+};
+
+
+app.get("/", (req, res) => {
+    getItemsFromDatabase(res)
+}, (error) => {
+    res.status(error.code).json({
+        message: `Something went wrong. ${error.message}`
+    })
 })
+
 
 app.post("/", async (req, res) => {
     const notes = req.body;
     await database.push(notes);
-    res.status(200).json({ message: `Added successFully` })
+    res.status(200).send()
 }, (error) => {
     res.status(error.code).json({
         message: `Something went wrong. ${error.message}`
@@ -52,7 +57,6 @@ app.post("/", async (req, res) => {
 app.put("/:id", async (req, res) => {
     const body = req.body;
     await database.child(req.params.id).update(body);
-
     res.status(200).send()
 });
 
